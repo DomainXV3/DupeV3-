@@ -6,6 +6,9 @@ local tweeninfo = TweenInfo.new
 local input = game:GetService("UserInputService")
 local run = game:GetService("RunService")
 
+
+
+
 function Forums:DraggingEnabled(frame, parent)
         
     parent = parent or frame
@@ -75,6 +78,9 @@ function Forums.new(newName)
     getgenv().libName = newName
     newName = newName or "forum.robloxscripts.com"
 
+
+
+
     local _81asf91z9asf1 = Instance.new("ScreenGui")
     local shadow = Instance.new("ImageLabel")
     local Main = Instance.new("Frame")
@@ -99,6 +105,38 @@ function Forums.new(newName)
     _81asf91z9asf1.Name = newName
     _81asf91z9asf1.Parent = game.CoreGui
     _81asf91z9asf1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local Main = script.Parent.Main
+
+local draggingEnabled = false
+local dragStartPos = nil
+local frameStartPos = nil
+
+Main.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingEnabled = true
+        dragStartPos = input.Position
+        frameStartPos = Main.Position
+    end
+end)
+
+Main.InputChanged:Connect(function(input)
+    if draggingEnabled and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local dragDelta = input.Position - dragStartPos
+        Main.Position = UDim2.new(
+            frameStartPos.X.Scale,
+            frameStartPos.X.Offset + dragDelta.X,
+            frameStartPos.Y.Scale,
+            frameStartPos.Y.Offset + dragDelta.Y
+        )
+    end
+end)
+
+Main.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingEnabled = false
+    end
+end)
 
     shadow.Name = "shadow"
     shadow.Parent = _81asf91z9asf1
